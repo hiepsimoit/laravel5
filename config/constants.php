@@ -81,9 +81,14 @@ return [
             'icon'		=> 'fa fa-cog',
             'children'  => array(
                 'Admin Users'			=> 'admin/admin_user',
-                'Create Admin User'		=> 'admin/admin_user_create',
-                'Admin User Groups'		=> 'admin/admin_user_group',
+                'Create Admin User'		=> 'admin/admin_user/create',
             )
+        ),
+        'configSites' => array(
+            'name'		=> 'Cấu hình',
+            'url'		=> 'admin/setting',
+            'icon'		=> 'fa fa-cog',
+
         ),
         'util' => array(
             'name'		=> 'Utilities',

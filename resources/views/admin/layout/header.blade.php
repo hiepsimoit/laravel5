@@ -32,7 +32,7 @@
                         <li class="user-footer">
                             <div class="pull-left">
                                 @if(Auth::check())
-                                    <a href="{{ url('admin/user/edit') }}" class="btn btn-default btn-flat">Đổi mật khẩu</a>
+                                    <a href="{{ url('admin/changePass') }}" class="btn btn-default btn-flat">Đổi mật khẩu</a>
                                 @endif
                             </div>
                             <div class="pull-right">

@@ -23,11 +23,19 @@
                 <div class="box-body">
                     <form action="{{ url('admin/admin_user/'.$data->id) }}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+
                         <input type="hidden" name="_method" value="put" />
                         <div class="form-group">
-                            <label>User name1</label>
-                            <input type="text" name="username" id="username" class="form-control" value="{{$data->username}}">
+                            <label>User name</label>
+                            {{$data->username}}
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            <input type="password" name="password" id="p" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Nhập lại mật khẩu</label>
+                            <input type="password" name="rePassword" id="username" class="form-control">
                         </div>
                         <div class="form-group">
                             <button>Submit</button>
