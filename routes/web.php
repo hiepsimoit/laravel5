@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('admin/login','Auth\LoginController@showLoginForm');
+Route::get('admin/login','Auth\LoginController@showAdminLoginForm');
 Route::post('admin/login', 'Auth\LoginController@adminLogin');
 
-Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>'auth:admin_user'],function (){
-    Route::get('home','HomeController@index');
+Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>'auth:admin'],function (){
+    Route::get('','AdminController@index');
     Route::group(['prefix'=>'user'],function (){
         Route::get('edit','AdminUserController@edit');
         Route::post('edit','AdminUserController@postEdit');
@@ -80,7 +80,9 @@ Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>'auth:admin_u
     Route::resource('admin_user', 'AdminUserController');
 });
 
-
-Route::group(['middleware' => 'locale'], function() {
-    Route::get('lang/{lang}','LangController@lang')->name('lang');
+Route::group(['namespace'=>'User','middleware'=>'auth:web'],function (){
+    Route::get('','UserController@index');
 });
+
+Auth::routes();
+
