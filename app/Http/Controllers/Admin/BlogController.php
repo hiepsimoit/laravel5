@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\blogs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BlogController extends Controller
 {
+    public function __construct()
+    {
+        $this->url = 'blog';
+        $this->titlePage = 'Blog';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +22,8 @@ class BlogController extends Controller
     public function index()
     {
         //
+        $data = blogs::all();
+        return view('admin.'.$this->url.'.index',['data'=>$data,'url'=>$this->url,'title'=>$this->titlePage]);
     }
 
     /**
@@ -25,6 +34,7 @@ class BlogController extends Controller
     public function create()
     {
         //
+        return view('admin.'.$this->url.'.add',['url'=>$this->url,'title'=>$this->titlePage]);
     }
 
     /**
@@ -36,6 +46,19 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'username' => 'required|max:50',
+            'password' => 'min:6|required_with:rePassword|same:rePassword',
+            'rePassword' => 'min:6'
+        ], [
+
+            ]
+        );
+        $admin_user = new blogs();
+        $admin_user->username = $request->username;
+        $admin_user->password = bcrypt($request['password']);
+        $admin_user->save();
+        return redirect('admin/'.$this->url)->with('message','Thêm thành công!');
     }
 
     /**

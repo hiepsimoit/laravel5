@@ -1,234 +1,119 @@
 @extends('admin.layout.index')
+@section('title',$title)
 @section('content')
-
-    <h1 class="text-uppercase">Thêm Blog</h1>
     <!-- Content Header (Page header) -->
-
-    <form class="form-horizontal" action="admin/blog/add" method="post">
-
-        <div class="box-body">
-            @if($errors->any())
-                @foreach($errors->all() as $err)
-                    {{ $err }} <br>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
                 @endforeach
-            @endif
+            </ul>
+        </div><br/>
+    @endif
 
-            @if(session('message'))
-                <div class="alert">
-                    {{ session('message') }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">{{$title}}</h3>
                 </div>
-            @endif
+                <div class="box-body">
+                    <form action="{{ route($url.'.store') }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="form-group">
+                            <label>Bài viết</label>
+                            <input type="text" name="title" id="title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Nội dung</label>
+                            <textarea id="content" name="content" rows="5" cols="40"
+                                      class="form-control my-editor"></textarea>
+                            <textarea id="my-editor" name="content"
+                                      class="form-control">{!! old('content', 'test editor content') !!}</textarea>
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="col-md-9">
+                                <div class="input-group">
+                           <span class="input-group-btn">
+                             <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+                               <i class="fa fa-picture-o"></i> Choose
+                             </a>
+                           </span>
+                                    <input id="thumbnail" class="form-control" type="text" name="filepath">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div id="holder" style="max-height:100px;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button>Submit</button>
+                        </div>
+                    </form>
 
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="form-group">
-                <label class="col-md-2">Tiêu đề</label>
-                <div class="col-md-10">
-                    <input class="title form-control" type="text" name="name" value="{{ old('name') }}"
-                           placeholder="Tiêu đề"></div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2">Tiêu đề tiếng nhật</label>
-                <div class="col-md-10">
-                    <input class="title form-control" type="text" name="name_jp" value="{{ old('name_jp') }}"
-                           placeholder="Tiêu đề"></div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2">Url</label>
-                <div class="col-md-10">
-                    <input class="form-control slug" type="text" name="url" value="{{ old('url') }}"
-                           placeholder=""></div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-md-2">Ảnh đại điện</label>
-                <div class="col-md-10">
-                    <input type="text" size="48" readonly name="image" id="image"/> <span
-                            onclick="openPopup()" class="btn btn-default">Chọn file</span>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-md-2">Nội dung</label>
-                <div class="col-md-10">
-                    <textarea class="form-control" id="description"
-                              name="description">{{ old('description') }}</textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2">Nội dung tiếng nhật</label>
-                <div class="col-md-10">
-                    <textarea class="form-control" id="description_jp"
-                              name="description_jp">{{ old('description_jp') }}</textarea>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-2">Phân loại</label>
-                <div class="col-md-2">
-                    <select class="form-control" name="type">
-                        <option value="1" <?php if (old('type') == 1) {
-                            echo 'selected';
-                        } ?>>Chuyện đi Nhật
-                        </option>
-                        <option value="2" <?php if (old('type') == 2) {
-                            echo 'selected';
-                        } ?>>Chuyện học tập
-                        </option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label>Description</label>
-                </div>
-                <div class="col-md-6">
-                    <textarea name="description" rows="5" cols="40" class="form-control tinymce-editor"></textarea>
-                    <textarea id="mytextarea" name="description" rows="5" cols="40" class="form-control "></textarea>
-                    <textarea id="local-upload" name="description" rows="5" cols="40" class="form-control "></textarea>
-                    <div id="uploader">
-                        <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-12">
-                <button class="btn btn-primary" type="submit">Thêm</button>
-            </div>
-        </div>
-
-
-    </form>
-    <!-- /.content -->
+    </div>
     <script src="https://cdn.tiny.cloud/1/tm9fwsqhr637c9pvl8q9vg44wgct2ejtd2zejauegt1prhi9/tinymce/5/tinymce.min.js"
             referrerpolicy="origin"></script>
-    <script type="text/javascript">
+    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+    <script src="{{ asset('public/vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 
-    </script>
     <script>
-        $("#uploader").plupload({
-            // General settings
-            runtimes : 'html5,flash,silverlight,html4',
-            url : "/examples/upload",
 
-            // Maximum file size
-            max_file_size : '2mb',
+        var options = {
+            filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+            filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+            filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+            filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+        };
+        CKEDITOR.replace('my-editor', options);
+        /*
+   var editor_config = {
+       path_absolute: "/",
+       selector: 'textarea#content',
+       relative_urls: false,
+       plugins: [
+           "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+           "searchreplace wordcount visualblocks visualchars code fullscreen",
+           "insertdatetime media nonbreaking save table directionality",
+           "emoticons template paste textpattern"
+       ],
+       toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+       file_picker_callback: function (callback, value, meta) {
+           var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+           var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
 
-            chunk_size: '1mb',
+           var cmsURL = editor_config.path_absolute + 'laravel-filemanager?editor=' + meta.fieldname;
+           if (meta.filetype == 'image') {
+               cmsURL = cmsURL + "&type=Images";
+           } else {
+               cmsURL = cmsURL + "&type=Files";
+           }
 
-            // Resize images on clientside if we can
-            resize : {
-                width : 200,
-                height : 200,
-                quality : 90,
-                crop: true // crop to exact dimensions
-            },
+           tinyMCE.activeEditor.windowManager.openUrl({
+               url: cmsURL,
+               title: 'Filemanager',
+               width: x * 0.8,
+               height: y * 0.8,
+               resizable: "yes",
+               close_previous: "no",
+               onMessage: (api, message) => {
+                   callback(message.content);
+               }
+           });
+       }
+   };
 
-            // Specify what files to browse for
-            filters : [
-                {title : "Image files", extensions : "jpg,gif,png"},
-                {title : "Zip files", extensions : "zip,avi"}
-            ],
+   tinymce.init(editor_config);
 
-            // Rename files by clicking on their titles
-            rename: true,
+*/
+        var route_prefix = "laravel-filemanager";
+        $('#lfm').filemanager('image', {prefix: route_prefix});
 
-            // Sort files
-            sortable: true,
-
-            // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
-            dragdrop: true,
-
-            // Views to activate
-            views: {
-                list: true,
-                thumbs: true, // Show thumbs
-                active: 'thumbs'
-            },
-
-            // Flash settings
-            flash_swf_url : '/plupload/js/Moxie.swf',
-
-            // Silverlight settings
-            silverlight_xap_url : '/plupload/js/Moxie.xap'
-        });
-        tinymce.init({
-            selector: 'textarea#local-upload',
-            plugins: 'image code',
-            toolbar: 'undo redo | image code',
-
-            /* without images_upload_url set, Upload tab won't show up*/
-            images_upload_url: 'postAcceptor.php',
-
-            /* we override default upload handler to simulate successful upload*/
-            images_upload_handler: function (blobInfo, success, failure) {
-                setTimeout(function () {
-                    /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-                    success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
-                }, 2000);
-            },
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-        });
-        tinymce.init({
-            selector: '#mytextarea',
-            plugins: [
-                "image imagetool",
-            ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | lignleft aligncenter alignright alignjustify | bullist numlist outdent indent  | image",
-
-            file_picker_callback: function (callback, value, meta) {
-                let x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-                let y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-
-                let type = 'image' === meta.filetype ? 'Images' : 'Files',
-                    url = '/laravel-filemanager?editor=tinymce5&type=' + type;
-
-                tinymce.activeEditor.windowManager.openUrl({
-                    url: url,
-                    title: 'Filemanager',
-                    width: x * 0.8,
-                    height: y * 0.8,
-                    onMessage: (api, message) => {
-                        callback(message.content);
-                    }
-                });
-            }
-        });
-        tinymce.init({
-            selector: 'textarea.tinymce-editor',
-            height: 100,
-
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount ',
-            ],
-            toolbar: 'undo redo | formatselect | ' +
-                'bold italic backcolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat | help |image',
-            content_css: '//www.tiny.cloud/css/codepen.min.css'
-        });
-        CKEDITOR.replace('description', {
-            filebrowserBrowseUrl: '{{ asset('public/ckfinder/ckfinder.html') }}',
-            filebrowserImageBrowseUrl: '{{ asset('public/ckfinder/ckfinder.html?type=Images') }}',
-            filebrowserFlashBrowseUrl: '{{ asset('public/ckfinder/ckfinder.html?type=Flash') }}',
-            filebrowserUploadUrl: '{{ asset('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
-            filebrowserImageUploadUrl: '{{ asset('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
-            filebrowserFlashUploadUrl: '{{ asset('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
-        });
-        CKEDITOR.replace('description_jp', {
-            filebrowserBrowseUrl: '{{ asset('public/ckfinder/ckfinder.html') }}',
-            filebrowserImageBrowseUrl: '{{ asset('public/ckfinder/ckfinder.html?type=Images') }}',
-            filebrowserFlashBrowseUrl: '{{ asset('public/ckfinder/ckfinder.html?type=Flash') }}',
-            filebrowserUploadUrl: '{{ asset('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
-            filebrowserImageUploadUrl: '{{ asset('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
-            filebrowserFlashUploadUrl: '{{ asset('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
-        });
-
+        // $('#lfm').filemanager('file');
         function openPopup() {
             CKFinder.popup({
                 chooseFiles: true,
@@ -266,5 +151,4 @@
 
         });
     </script>
-
 @endsection

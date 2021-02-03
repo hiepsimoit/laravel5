@@ -22,12 +22,22 @@ Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>'auth:admin']
 
 
     Route::resource('admin_user', 'AdminUserController');
+    Route::resource('blog', 'BlogController');
     Route::get('changePass','AdminUserController@change');
 });
 
 Route::group(['namespace'=>'User','middleware'=>'auth:web'],function (){
-    Route::get('','UserController@index');
+    Route::get('/home', function(){
+        return View('frontend.home');
+    });
 });
 
 Auth::routes();
+
+//Route::get('/laravel-filemanager', '\UniSharp\LaravelFilemanager\Controllers\LfmController@show');
+///Route::post('/laravel-filemanager/upload', '\UniSharp\LaravelFilemanager\Controllers\UploadController@upload');
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['auth:admin']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
 
