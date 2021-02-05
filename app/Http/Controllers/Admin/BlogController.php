@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\blogs;
+use App\blog;
+use App\blogs_category;
+use App\category;
+use App\User;
+use App\phone;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -22,7 +26,15 @@ class BlogController extends Controller
     public function index()
     {
         //
-        $data = blogs::all();
+     //   $data = category::all();
+        $data = blog::find(1)->category;
+      //  $data= User::find(1)->phone;
+
+     //   $data= phone::find(1);
+
+        // $data = blogs_category::find(1)->blogs;
+        echo $data;
+        echo "<pre>";print_r($data);die;
         return view('admin.'.$this->url.'.index',['data'=>$data,'url'=>$this->url,'title'=>$this->titlePage]);
     }
 
