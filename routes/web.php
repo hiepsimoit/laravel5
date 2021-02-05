@@ -25,7 +25,7 @@ Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>'auth:admin']
 });
 
 Route::group(['namespace'=>'User','middleware'=>'auth:web'],function (){
-    Route::get('/home', function(){
+    Route::get('/', function(){
         return View('frontend.home');
     });
 });
