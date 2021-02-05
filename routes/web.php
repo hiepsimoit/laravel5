@@ -15,11 +15,9 @@ Route::get('admin/login','Auth\LoginController@showAdminLoginForm');
 Route::post('admin/login', 'Auth\LoginController@adminLogin');
 
 Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>'auth:admin'],function (){
-    Route::get('','AdminController@index');
+    Route::get('/home','AdminController@index');
     Route::get('setting','AdminSettingController@index');
     Route::post('setting','AdminSettingController@postSetting');
-
-
 
     Route::resource('admin_user', 'AdminUserController');
     Route::resource('blog', 'BlogController');
@@ -35,7 +33,7 @@ Route::group(['namespace'=>'User','middleware'=>'auth:web'],function (){
 Auth::routes();
 
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['auth:admin']], function () {
+Route::group(['prefix' => 'laravel-filemanager'], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 

@@ -36,6 +36,7 @@
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
   <![endif]-->
 
   <!-- Google Font -->
@@ -79,6 +80,8 @@
   <script src="public/admin/dist/js/pages/dashboard.js"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="public/admin/dist/js/demo.js"></script>
+    <script src="public/admin/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="public/admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
   <script src="{{ asset('public/ckeditor/ckeditor.js') }}"></script>
   <script src="{{ asset('public/ckfinder/ckfinder.js') }}"></script>
 

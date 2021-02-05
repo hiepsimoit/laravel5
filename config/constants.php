@@ -66,8 +66,7 @@ return [
             'icon' => 'ion ion-edit',    // can use Ionicons instead of FontAwesome
             'children' => array(
                 'Blog Posts' => 'admin/blog/add',
-                'Blog Categories' => 'blog/category',
-                'Blog Tags' => 'blog/tag',
+                'Blog Lists' => 'admin/blog',
             )
         ),
         'cover_photo' => array(
