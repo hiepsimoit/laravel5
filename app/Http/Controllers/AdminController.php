@@ -9,8 +9,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AdminController extends Controller
 {
-    protected function render($view_file, $layout = 'default')
+    protected function render($view_file,$data, $url, $title)
     {
-        return view('admin.'.$this->url.'.index',['data'=>$data,'url'=>$this->url,'title'=>$this->titlePage]);
+
+        return view($view_file,['data'=>$data,'url'=>$url,'title'=>$title]);
     }
 }
